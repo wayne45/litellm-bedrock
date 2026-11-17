@@ -1,3 +1,4 @@
+# Secrets come from the environment (shell or .env next to this file). See README.md in this repo.
 services:
   db:
     container_name: litellm-db
@@ -5,12 +6,12 @@ services:
     ports:
       - "5433:5432"
     environment:
-      POSTGRES_USER: your-postgres-username
-      POSTGRES_PASSWORD: your-postgres-password
+      POSTGRES_USER: ${LITELLM_DB_USER:?set LITELLM_DB_USER}
+      POSTGRES_PASSWORD: ${LITELLM_DB_PASSWORD:?set LITELLM_DB_PASSWORD}
       POSTGRES_DB: litellm
     volumes:
       - litellm-bedrock-pg:/var/lib/postgresql/data
-      
+
   redis:
     container_name: litellm-redis
     image: redis:7-alpine
@@ -21,7 +22,7 @@ services:
     command: redis-server --appendonly yes --port 6380
 
   litellm:
-    image: ghcr.io/berriai/litellm:main-latest
+    image: ghcr.io/berriai/litellm:v1.109.1
     container_name: litellm
     ports:
       - "4000:4000"
@@ -30,16 +31,14 @@ services:
       # LiteLLM config
       - ./config.yaml:/app/config.yaml
 
-      # AWS credentials (required for Bedrock)
-      - ~/.aws:/root/.aws:ro
-
     environment:
-      AWS_REGION: your-aws-region
-      AWS_PROFILE: your-aws-sso-profile
-      DATABASE_URL: postgresql://your-postgres-username:your-postgres-password@db:5432/litellm
-      LITELLM_MASTER_KEY: your-litellm-master-key
+      DATABASE_URL: postgresql://${LITELLM_DB_USER}:${LITELLM_DB_PASSWORD}@db:5432/litellm
+      LITELLM_MASTER_KEY: ${LITELLM_MASTER_KEY:?set LITELLM_MASTER_KEY}
       REDIS_HOST: redis
       REDIS_PORT: "6380"
+      # Upstream LiteLLM proxy (set in .env or your shell)
+      UPSTREAM_LITELLM_API_BASE: ${UPSTREAM_LITELLM_API_BASE:?set UPSTREAM_LITELLM_API_BASE}
+      UPSTREAM_LITELLM_API_KEY: ${UPSTREAM_LITELLM_API_KEY:?set UPSTREAM_LITELLM_API_KEY}
 
     depends_on:
       - db
