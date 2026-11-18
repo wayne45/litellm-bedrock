@@ -1,0 +1,7 @@
+{
+  "_comment": "upstream model id -> LiteLLM price-map key (model_info.base_model). Used by gen-upstream-models.sh so LiteLLM can compute spend. Pick global/no-region Bedrock entries.",
+  "claude-sonnet-5-5-global": "global.anthropic.claude-sonnet-5-5",
+  "claude-haiku-5-5-global": "global.anthropic.claude-haiku-5-5",
+  "titan-embed-v2": "amazon.titan-embed-text-v2:0",
+  "qwen3-32b": "qwen.qwen3-32b-v1:0"
+}

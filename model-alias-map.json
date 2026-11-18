@@ -1,0 +1,7 @@
+{
+  "_comment": "local model_name -> upstream router model id. Local names are hand-maintained and stable; when upstream renames, change only the right-hand side. gen-upstream-models.sh serves exactly these models and fails if an upstream id is missing.",
+  "claude_sonnet_5_5": "claude-sonnet-5-5-global",
+  "claude_haiku_5_5": "claude-haiku-5-5-global",
+  "titan_embed_v2": "titan-embed-v2",
+  "qwen3_32b": "qwen3-32b"
+}
